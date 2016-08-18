@@ -1,6 +1,6 @@
 import React from 'react'
 import { IndexRoute, Route } from 'react-router'
-import { App, Tickets, Me, Profile, Landing, SignUp, SignIn, NoMatch } from './containers'
+import { App, Tickets, Me, Profile, Landing, SignUp, SignIn, NoMatch, Users } from './containers'
 
 export default (store) => {
   const requireLogin = (nextState, replace) => {
@@ -28,6 +28,7 @@ export default (store) => {
     <Route path='/' component={App}>
       <IndexRoute component={Landing} onEnter={alreadyLogin} />
       <Route path='tickets' component={Tickets} onEnter={requireLogin} />
+      <Route path='users' component={Users} onEnter={requireLogin} />
       <Route path='profile' onEnter={requireLogin}>
         <IndexRoute component={Me} />
         <Route path=':id' component={Profile} />

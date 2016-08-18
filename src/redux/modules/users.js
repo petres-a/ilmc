@@ -1,6 +1,9 @@
 const LOAD = 'users/LOAD'
 const LOAD_SUCCESS = 'users/LOAD_SUCCESS'
 const LOAD_FAIL = 'users/LOAD_FAIL'
+const USERS = 'users/USERS'
+const USERS_SUCCESS = 'users/USERS_SUCCESS'
+const USERS_FAIL = 'users/USERS_FAIL'
 
 const initialState = {
   loaded: false
@@ -39,6 +42,13 @@ export function isLoaded (globalState) {
 export function load (cityId) {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get('/api/cities/' + cityId + '/users')
+    promise: (client) => client.get('/api/cities/' + cityId + '/citizens')
+  }
+}
+
+export function users () {
+  return {
+    types: [USERS, USERS_SUCCESS, USERS_FAIL],
+    promise: (client) => client.get('/api/users')
   }
 }

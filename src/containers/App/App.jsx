@@ -127,8 +127,7 @@ class App extends Component {
           title='ILoveMyCity Intranet'
           onLeftIconButtonTouchTap={toggleNav}
           onTitleTouchTap={() => { push('/tickets') }}
-          titleStyle={{ cursor: 'pointer' }}
-        />
+          titleStyle={{ cursor: 'pointer' }} />
         <Drawer docked={false} open={navOpen} onRequestChange={toggleNav}>
           <MenuItem onTouchTap={() => { push('/tickets'); toggleNav() }} style={{ cursor: 'pointer' }}>Tickets</MenuItem>
           <MenuItem onTouchTap={() => { push('/city'); toggleNav() }} style={{ cursor: 'pointer' }}>Mairie</MenuItem>

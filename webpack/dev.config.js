@@ -43,9 +43,11 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelOptions), 'standard'] },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
+      {test: /\.json$/, loader: 'json'},
+      {test: /\.styl$/, loader: 'style!css?modules!stylus'},
       { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' },
-      { test: webpackIsomorphicToolsPlugin.regular_expression('images'), loader: 'url?limit=10240' }
+      { test: webpackIsomorphicToolsPlugin.regular_expression('images'), loader: 'url?limit=10240' },
+      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' }
     ]
   },
   progress: true,

@@ -1,0 +1,18 @@
+web:
+  image: justkant/ilovemycity-api:0.1.9
+  ports:
+    - "3030:3030"
+  links:
+    - "rdb:webdb"
+  environment:
+    - DOCKER_HOST=${DOCKER_HOST}
+
+rdb:
+  image: rethinkdb:2.3
+  volumes_from:
+    - data
+
+data:
+  image: tianon/true
+  volumes:
+    - /data

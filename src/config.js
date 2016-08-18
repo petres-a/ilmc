@@ -5,8 +5,8 @@ const DOCKER_HOST = process.env.DOCKER_HOST
 const environment = {
   development: {
     isProduction: false,
-    api: DOCKER_HOST ? 'http://' + DOCKER_HOST.match(/([0-9]+\.)+([0-9]+)/g)[0] + ':3030' : 'http://localhost:3030',
-    apiServer: DOCKER_HOST ? 'http://' + DOCKER_HOST.match(/([0-9]+\.)+([0-9]+)/g)[0] + ':3030' : 'http://localhost:3030'
+    api: DOCKER_HOST ? 'http://' + DOCKER_HOST.match(/([0-9]+\.)+([0-9]+)/g)[0] + ':3030' : 'http://api.ilovemycity.fr',
+    apiServer: DOCKER_HOST ? 'http://' + DOCKER_HOST.match(/([0-9]+\.)+([0-9]+)/g)[0] + ':3030' : 'http://api.ilovemycity.fr'
   },
   production: {
     isProduction: true,
