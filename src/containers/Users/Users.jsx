@@ -11,9 +11,13 @@ class Users extends Component {
     users: PropTypes.array
   };
 
+  constructor (props) {
+    super(props)
+    this.props.getUsers()
+  }
+
   render () {
     const styles = require('./Users.styl')
-    this.props.getUsers()
     return (
       <div style={{ display: 'flex', flexDirection: 'row', flexGrow: 1 }}>
         <div style={{ display: 'flex', flexDirection: 'column', flexBasis: '50%' }}>
@@ -21,9 +25,9 @@ class Users extends Component {
           <List className={styles.usersList}>
             {this.props.users && this.props.users.map((user) => {
               return (
-                <div key={user.id}>F
+                <div key={user.id}>
                   <ListItem
-                    leftAvatar={<Avatar src='msilo.png' />}
+                    leftAvatar={<Avatar src={user.picture} />}
                     primaryText={user.firstname}
                   />
                   <Divider inset />

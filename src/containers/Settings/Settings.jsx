@@ -25,11 +25,11 @@ class Settings extends Component {
 
     const actions = [
       <FlatButton
-        label='Close'
+        label='Fermer'
         onTouchTap={closeSettings}
       />,
       <FlatButton
-        label='Save'
+        label='Sauvegarder'
         secondary
         onTouchTap={updateUser}
       />

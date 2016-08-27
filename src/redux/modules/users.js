@@ -30,6 +30,25 @@ export default function reducer (state = initialState, action = {}) {
         loaded: false,
         error: action.error
       }
+    case USERS:
+      return {
+        ...state,
+        usersLoading: true
+      }
+    case USERS_SUCCESS:
+      return {
+        ...state,
+        usersLoading: false,
+        usersLoaded: true,
+        users: action.result
+      }
+    case USERS_FAIL:
+      return {
+        ...state,
+        usersLoading: false,
+        usersLoaded: false,
+        error: action.error
+      }
     default:
       return state
   }

@@ -4,17 +4,19 @@ import keycode from 'keycode'
 import Card from 'material-ui/Card'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
-import { signup } from 'redux/modules/auth'
+import { signup, updateUser } from 'redux/modules/auth'
 
 class SignUp extends Component {
   static propTypes = {
-    signup: PropTypes.func.isRequired
+    signup: PropTypes.func.isRequired,
+    updateUser: PropTypes.func.isRequired
   }
 
   constructor (props) {
     super(props)
     this.handleKeyDown = this.handleKeyDown.bind(this)
     this.signup = this.signup.bind(this)
+    this.updateUser = this.props.updateUser
   }
 
   handleKeyDown (event) {
@@ -24,6 +26,7 @@ class SignUp extends Component {
   signup () {
     const { signup } = this.props
     signup({ cityName: this.refs.cityname.getValue(), firstname: this.refs.firstname.getValue(), lastname: this.refs.lastname.getValue(), email: this.refs.email.getValue(), password: this.refs.password.getValue() })
+    this.props.updateUser({ type: 'a' })
   }
 
   render () {
@@ -45,4 +48,4 @@ class SignUp extends Component {
   }
 }
 
-export default connect(null, { signup })(SignUp)
+export default connect(null, { signup, updateUser })(SignUp)

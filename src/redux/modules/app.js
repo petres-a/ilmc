@@ -1,11 +1,13 @@
 const TOGGLE_NAV = 'app/TOGGLE_NAV'
 const SET_SETTINGS = 'app/SET_SETTINGS'
 const SET_NOTIFS = 'app/SET_NOTIFS'
+const SET_TICKET = 'app/SET_TICKET'
 
 const initialState = {
   navOpen: false,
   notifsOpen: false,
-  settingsOpen: false
+  settingsOpen: false,
+  ticketOpen: false
 }
 
 export default function reducer (state = initialState, action = {}) {
@@ -24,6 +26,11 @@ export default function reducer (state = initialState, action = {}) {
       return {
         ...state,
         notifsOpen: action.data
+      }
+    case SET_TICKET:
+      return {
+        ...state,
+        ticketOpen: action.data
       }
     default:
       return state
@@ -48,4 +55,12 @@ export function openNotifs () {
 
 export function closeNotifs () {
   return { type: SET_NOTIFS, data: false }
+}
+
+export function openTicket () {
+  return { type: SET_TICKET, data: true }
+}
+
+export function closeTicket () {
+  return { type: SET_TICKET, data: false }
 }
