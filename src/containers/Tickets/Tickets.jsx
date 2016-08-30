@@ -18,7 +18,6 @@ class Tickets extends Component {
     this.state = {
       tickets: this.props.getTickets()
     }
-    this.props.getTickets().then(response => this.setState({tickets: response}))
   }
 
   create (event) {
@@ -43,24 +42,10 @@ class Tickets extends Component {
   render () {
     const styles = require('./Tickets.styl')
     return (
-      <div style={{ display: 'flex', flexDirection: 'row', flexGrow: 1 }}>
+      <div style={{ display: 'flex', flexDirection: 'row', flexGrow: 5 }}>
         <div style={{ display: 'flex', flexDirection: 'column', flexBasis: '50%' }}>
           <h3 className={styles.h3ticket}>Liste des Tickets</h3>
           <SearchBar tickets={this.props.tickets} />
-        </div>
-        <div className={styles.form}>
-          <div className={styles.container}>
-            <h3 className={styles.title}>Création de ticket</h3>
-            <form className={styles.inputGroup} onSubmit={this.create.bind(this)}>
-              <div className={styles.inputBox}>
-                <input ref='title' type='title' placeholder='Titre' required />
-              </div>
-              <div className={styles.inputBox}>
-                <input ref='description' type='description' placeholder='Description' required />
-              </div>
-              <input className={styles.inputButton} type='submit' value='Créer' />
-            </form>
-          </div>
         </div>
       </div>
     )

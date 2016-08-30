@@ -2,7 +2,7 @@
 import config from '../config'
 import axios from 'axios'
 
-const methods = ['get', 'post', 'put', 'delele']
+const methods = ['get', 'post', 'put', 'delete']
 
 function formatUrl (path, local) {
   const adjustedPath = path[0] !== '/' ? '/' + path : path

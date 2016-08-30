@@ -16,7 +16,7 @@ export default (store) => {
     const {auth: { token }} = store.getState()
     if (token) {
       // oops, already logged in, so can't be here!
-      return replace('/tickets')
+      return replace('/city')
     }
     return
   }

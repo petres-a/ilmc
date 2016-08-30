@@ -16,6 +16,12 @@ const TICKETS_FAIL = 'ticket/TICKET_FAIL'
 const CLOSE = 'ticket/CLOSE'
 const CLOSE_SUCCESS = 'ticket/CLOSE_SUCCESS'
 const CLOSE_FAIL = 'ticket/CLOSE_FAIL'
+const MESSAGES = 'ticket/MESSAGES'
+const MESSAGES_SUCCESS = 'ticket/MESSAGES_SUCCESS'
+const MESSAGES_FAIL = 'ticket/MESSAGES_FAIL'
+const CREATE_MESSAGE = 'ticket/CREATE_MESSAGE'
+const CREATE_MESSAGE_SUCCESS = 'ticket/CREATE_MESSAGE_SUCCESS'
+const CREATE_MESSAGE_FAIL = 'ticket/CREATE_MESSAGE_FAIL'
 
 const initialState = {
   loaded: false
@@ -112,7 +118,45 @@ export default function reducer (state = initialState, action = {}) {
         ...state,
         ticketsLoading: false,
         ticketsLoaded: false,
-        usersError: action.error
+        ticketsError: action.error
+      }
+    case MESSAGES:
+      return {
+        ...state,
+        messagesLoading: true
+      }
+    case MESSAGES_SUCCESS:
+      return {
+        ...state,
+        messagesLoading: false,
+        messagesLoaded: true,
+        messages: action.result
+      }
+    case MESSAGES_FAIL:
+      return {
+        ...state,
+        messagesLoading: false,
+        messagesLoaded: false,
+        messages: action.error
+      }
+    case CREATE_MESSAGE:
+      return {
+        ...state,
+        messageCreating: true
+      }
+    case CREATE_MESSAGE_SUCCESS:
+      return {
+        ...state,
+        messageCreating: false,
+        messageCreated: true,
+        message: action.result
+      }
+    case CREATE_MESSAGE_FAIL:
+      return {
+        ...state,
+        messageCreating: false,
+        messageCreated: false,
+        messageError: action.error
       }
     default:
       return state
@@ -129,6 +173,7 @@ export function load (cityId) {
     promise: (client) => client.get('/api/cities/' + cityId + '/tickets')
   }
 }
+
 export function tickets () {
   return {
     types: [TICKETS, TICKETS_SUCCESS, TICKETS_FAIL],
@@ -154,5 +199,26 @@ export function close (id) {
   return {
     types: [CLOSE, CLOSE_SUCCESS, CLOSE_FAIL],
     promise: (client) => client.put('/api/tickets/' + id + '/close')
+  }
+}
+
+export function del (id) {
+  return {
+    types: [DELETE, DELETE_SUCCESS, DELETE_FAIL],
+    promise: (client) => client.delete('/api/tickets/' + id)
+  }
+}
+
+export function messages (id) {
+  return {
+    types: [MESSAGES, MESSAGES_SUCCESS, MESSAGES_FAIL],
+    promise: (client) => client.get('/api/tickets/' + id + '/messages')
+  }
+}
+
+export function createMessage (id, data) {
+  return {
+    types: [CREATE_MESSAGE, CREATE_MESSAGE_SUCCESS, CREATE_MESSAGE_FAIL],
+    promise: (client) => client.post('/api/tickets/' + id + '/messages', {data: data})
   }
 }
