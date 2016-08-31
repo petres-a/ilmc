@@ -43,7 +43,7 @@ class Tickets extends Component {
     const styles = require('./Tickets.styl')
     return (
       <div style={{ display: 'flex', flexDirection: 'row', flexGrow: 5 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', flexBasis: '50%' }}>
+        <div key='list' style={{ display: 'flex', flexDirection: 'column', flexBasis: '50%' }}>
           <h3 className={styles.h3ticket}>Liste des Tickets</h3>
           <SearchBar tickets={this.props.tickets} />
         </div>

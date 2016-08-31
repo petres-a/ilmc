@@ -23,7 +23,7 @@ class SignIn extends Component {
 
   signin () {
     const { signin } = this.props
-    signin({ email: this.refs.email.getValue(), password: this.refs.password.getValue() })
+    signin({ username: this.refs.email.getValue(), password: this.refs.password.getValue() })
   };
 
   render () {

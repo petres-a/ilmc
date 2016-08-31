@@ -31,7 +31,6 @@ class SearchBar extends Component {
       },
       title: '',
       description: '',
-      close: '',
       messages: [],
       message: ''
     }
@@ -56,14 +55,15 @@ class SearchBar extends Component {
   }
 
   handleCloseTicket (ticket) {
-    this.props.closeTicket(ticket.id).then(response => this.props.getTickets().then(response => this.setState({tickets: response})))
+    var newTicket = ticket
+    newTicket.close = true
+    this.props.closeTicket(ticket.id).then(response => this.props.getTickets().then(response => this.setState({tickets: response, ticket: newTicket})))
   }
 
   handleEdit () {
     const newTicket = {
       title: this.state.title,
-      description: this.state.description,
-      close: this.state.close
+      description: this.state.description
     }
     this.props.updateTicket(this.state.ticket.id, newTicket).then(response => this.props.getTickets().then(response => this.setState({tickets: response, openTicket: false})))
   }

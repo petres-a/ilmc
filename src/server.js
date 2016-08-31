@@ -49,7 +49,12 @@ app.get('/status', (req, res) => {
 })
 
 app.post('/signin', (req, res) => {
-  axios.post(config.apiServer + '/auth/signin', req.body).then((response) => {
+  console.log(req.body)
+  axios.request({
+    method: 'post',
+    url: config.apiServer + '/auth/signin',
+    auth: req.body
+  }).then((response) => {
     res.cookie('token', response.data.token, { maxAge: ms('7d'), secure: false })
     res.send(response.data)
   }, (err) => {
