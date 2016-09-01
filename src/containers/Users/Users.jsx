@@ -88,10 +88,13 @@ class Users extends Component {
             actions={actions}
             modal
             open={this.state.openUser}
+            autoScrollBodyContent
           >
             <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <img src={this.state.user.picture} />
               <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                <TextField id='id' name='id' floatingLabelText='User id' disabled style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.user.firstname} ref='id' />
+                <TextField id='id' name='id' floatingLabelText='User id' disabled style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.user.id} ref='id' />
+                <TextField id='connected' name='connected' floatingLabelText='Connected' disabled style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.user.connected ? 'Online' : 'Offline'} ref='id' />
               </div>
               <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <TextField id='firstname' name='firstname' floatingLabelText='Firstname' disabled style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.user.firstname} ref='firstname' />

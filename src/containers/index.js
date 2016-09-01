@@ -1,4 +1,5 @@
 export { default as App } from './App/App'
+export { default as City } from './City/City'
 export { default as Tickets } from './Tickets/Tickets'
 export { default as Landing } from './Landing/Landing'
 export { default as Me } from './Me/Me'

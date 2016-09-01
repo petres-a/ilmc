@@ -153,7 +153,7 @@ export function signup (data) {
     types: [SIGNUP, SIGNUP_SUCCESS, SIGNUP_FAIL],
     promise: (client) => client.post('/signup', {
       local: true,
-      data: data,
+      data: data
     }).then((data) => {
       global.resetSocket()
       return data

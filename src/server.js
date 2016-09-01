@@ -49,7 +49,6 @@ app.get('/status', (req, res) => {
 })
 
 app.post('/signin', (req, res) => {
-  console.log(req.body)
   axios.request({
     method: 'post',
     url: config.apiServer + '/auth/signin',

@@ -6,11 +6,13 @@ import Divider from 'material-ui/Divider'
 import Avatar from 'material-ui/Avatar'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
-import Checkbox from 'material-ui/Checkbox'
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
 import Chip from 'material-ui/Chip'
+import SvgIcon from 'material-ui/SvgIcon'
 import RaisedButton from 'material-ui/RaisedButton'
 import { update as updateTicket, del as deleteTicket, close as closeTicket, tickets as getTickets, createMessage, messages as getMessages } from 'redux/modules/ticket'
-import { blue300 } from 'material-ui/styles/colors'
+import { blue300, green500 } from 'material-ui/styles/colors'
 
 @connect(state => ({state: state}), {updateTicket, deleteTicket, closeTicket, getTickets, createMessage, getMessages})
 class SearchBar extends Component {
@@ -31,8 +33,10 @@ class SearchBar extends Component {
       },
       title: '',
       description: '',
+      status: 'o',
       messages: [],
-      message: ''
+      message: '',
+      value: 1
     }
   }
 
@@ -47,23 +51,37 @@ class SearchBar extends Component {
   }
 
   handleOpen (ticket) {
-    this.props.getMessages(ticket.id).then(response => this.setState({openTicket: true, ticket: ticket, messages: response}))
+    var value = 1
+
+    if (ticket.status === 'o') {
+      value = 1
+    } else if (ticket.status === 'p') {
+      value = 2
+    } else if (ticket.status === 'c') {
+      value = 3
+    }
+
+    var state = {
+      openTicket: true,
+      ticket: ticket,
+      title: ticket.title,
+      description: ticket.description,
+      status: ticket.status,
+      value: value
+    }
+    this.setState(state)
+    this.props.getMessages(ticket.id).then(response => this.setState({messages: response}))
   }
 
   handleClose () {
     this.setState({openTicket: false})
   }
 
-  handleCloseTicket (ticket) {
-    var newTicket = ticket
-    newTicket.close = true
-    this.props.closeTicket(ticket.id).then(response => this.props.getTickets().then(response => this.setState({tickets: response, ticket: newTicket})))
-  }
-
   handleEdit () {
     const newTicket = {
       title: this.state.title,
-      description: this.state.description
+      description: this.state.description,
+      status: this.state.status
     }
     this.props.updateTicket(this.state.ticket.id, newTicket).then(response => this.props.getTickets().then(response => this.setState({tickets: response, openTicket: false})))
   }
@@ -77,6 +95,16 @@ class SearchBar extends Component {
       text: this.state.message
     }
     this.props.createMessage(this.state.ticket.id, newMessage).then(response => this.props.getMessages(this.state.ticket.id).then(response => this.setState({messages: response, message: ''})))
+  }
+
+  handleStatus (e, index, value) {
+    if (value === 1) {
+      this.setState({value: value, status: 'o'})
+    } else if (value === 2) {
+      this.setState({value: value, status: 'p'})
+    } else if (value === 3) {
+      this.setState({value: value, status: 'c'})
+    }
   }
 
   render () {
@@ -111,12 +139,12 @@ class SearchBar extends Component {
         <List className={styles.ticketList}>
           {tickets && tickets.map((ticket, i) => {
             return (
-              <div className='listItem' style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <ListItem
                   key={ticket.id}
                   id={ticket.id}
                   onTouchTap={() => this.handleOpen(ticket)}
-                  leftAvatar={<Avatar src={ticket.creator.picture} />}
+                  leftAvatar={<Avatar src={ticket.pictures} />}
                   primaryText={ticket.title}
                 />
                 <Chip
@@ -125,11 +153,6 @@ class SearchBar extends Component {
                 >
                   {ticket.votes} Votes
                 </Chip>
-                <FlatButton
-                  label='Fermer'
-                  primary
-                  onTouchTap={() => this.handleCloseTicket(ticket)}
-                />
                 <Divider inset />
               </div>
             )
@@ -139,12 +162,22 @@ class SearchBar extends Component {
           title='Ticket ouvert'
           actions={actions}
           open={this.state.openTicket}
+          autoScrollBodyContent
         >
           <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {this.state.ticket.pictures && this.state.ticket.pictures.map((picture, i) => {
+              return (
+                <img src={picture} />
+                )
+            })}
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
               <TextField id='title' name='title' floatingLabelText='Title' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.ticket.title} onChange={this.handleChange.bind(this)} ref='title' />
               <TextField id='description' name='description' floatingLabelText='Description' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.ticket.description} onChange={this.handleChange.bind(this)} ref='description' />
-              <Checkbox id='close' name='close' label='Ticket closed' defaultChecked={this.state.ticket.close} disabled style={styles.checkbox} ref='close' />
+              <SelectField value={this.state.value} onChange={this.handleStatus.bind(this)}>
+                <MenuItem value={1} primaryText='Open' />
+                <MenuItem value={2} primaryText='Pending' />
+                <MenuItem value={3} primaryText='Closed' />
+              </SelectField>
             </div>
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
               <TextField id='address' name='address' floatingLabelText='address' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} disabled defaultValue={this.state.ticket.address} ref='address' />

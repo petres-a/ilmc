@@ -103,9 +103,9 @@ class App extends Component {
 
   componentWillReceiveProps (nextProps) {
     if (!this.props.user && nextProps.user) {
-      this.props.push('/tickets')
+      this.props.push('/city')
     } else if (this.props.user && !nextProps.user) {
-      this.props.push('/')
+      this.props.push('/signin')
     }
   }
 
