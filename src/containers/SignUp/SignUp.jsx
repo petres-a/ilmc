@@ -4,19 +4,17 @@ import keycode from 'keycode'
 import Card from 'material-ui/Card'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
-import { signup, updateUser } from 'redux/modules/auth'
+import { signup } from 'redux/modules/auth'
 
 class SignUp extends Component {
   static propTypes = {
-    signup: PropTypes.func.isRequired,
-    updateUser: PropTypes.func.isRequired
+    signup: PropTypes.func.isRequired
   }
 
   constructor (props) {
     super(props)
     this.handleKeyDown = this.handleKeyDown.bind(this)
     this.signup = this.signup.bind(this)
-    this.updateUser = this.props.updateUser
   }
 
   handleKeyDown (event) {
@@ -25,8 +23,7 @@ class SignUp extends Component {
 
   signup () {
     const { signup } = this.props
-    signup({ cityName: this.refs.cityname.getValue(), firstname: this.refs.firstname.getValue(), lastname: this.refs.lastname.getValue(), email: this.refs.email.getValue(), password: this.refs.password.getValue() })
-    this.props.updateUser({ type: 'a' })
+    signup({ name: this.refs.cityname.getValue(), firstname: this.refs.firstname.getValue(), lastname: this.refs.lastname.getValue(), email: this.refs.email.getValue(), password: this.refs.password.getValue() })
   }
 
   render () {
@@ -34,13 +31,13 @@ class SignUp extends Component {
       <div className='centerContainer'>
         <Card>
           <div style={{display: 'flex', flexDirection: 'column', padding: '32px'}}>
-            <h3 style={{ textAlign: 'center', marginTop: 0 }}>Sign Up</h3>
-            <TextField id='citynamesignup' hintText='City Name' autoFocus ref='cityname' />
-            <TextField id='firstnamesignup' hintText='First Name' ref='firstname' />
-            <TextField id='lastnamesignup' hintText='Last Name' ref='lastname' />
+            <h3 style={{ textAlign: 'center', marginTop: 0 }}>Inscription</h3>
+            <TextField id='citynamesignup' hintText='Nom de la ville' autoFocus ref='cityname' />
+            <TextField id='firstnamesignup' hintText='Prénom' ref='firstname' />
+            <TextField id='lastnamesignup' hintText='Nom' ref='lastname' />
             <TextField id='emailsignup' hintText='Email' ref='email' />
-            <TextField id='passwordsignup' hintText='Password' type='password' ref='password' onKeyDown={this.handleKeyDown} />
-            <RaisedButton style={{ marginTop: '8px' }} label='Sign Up' secondary onTouchTap={this.signup} />
+            <TextField id='passwordsignup' hintText='Mot de passe' type='password' ref='password' onKeyDown={this.handleKeyDown} />
+            <RaisedButton style={{ marginTop: '8px' }} label='Inscription' secondary onTouchTap={this.signup} />
           </div>
         </Card>
       </div>
@@ -48,4 +45,4 @@ class SignUp extends Component {
   }
 }
 
-export default connect(null, { signup, updateUser })(SignUp)
+export default connect(null, { signup })(SignUp)

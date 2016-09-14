@@ -7,6 +7,7 @@ import DefaultTheme from 'utils/defaultTheme'
 import { Settings, Notifications } from 'containers'
 import { isLoaded as isAuthLoaded, load as loadAuth, signout } from 'redux/modules/auth'
 import { isLoaded as isTicketsLoaded, load as loadTickets } from 'redux/modules/ticket'
+import { isLoaded as isUsersLoaded, load as loadUsers } from 'redux/modules/users'
 import Drawer from 'material-ui/Drawer'
 import MenuItem from 'material-ui/MenuItem'
 import { toggleNav, openSettings } from 'redux/modules/app'
@@ -23,6 +24,11 @@ const hooks = {
       promises.push(dispatch(loadAuth()).then((user) => {
         if (!isTicketsLoaded(state)) {
           return dispatch(loadTickets(user.cityId))
+        }
+      }))
+      promises.push(dispatch(loadAuth()).then((user) => {
+        if (!isUsersLoaded(state)) {
+          return dispatch(loadUsers(user.cityId))
         }
       }))
     }
@@ -103,7 +109,7 @@ class App extends Component {
 
   componentWillReceiveProps (nextProps) {
     if (!this.props.user && nextProps.user) {
-      this.props.push('/city')
+      this.props.push('/users')
     } else if (this.props.user && !nextProps.user) {
       this.props.push('/signin')
     }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 import TextField from 'material-ui/TextField'
 import {List, ListItem} from 'material-ui/List'
@@ -9,24 +9,35 @@ import FlatButton from 'material-ui/FlatButton'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import Chip from 'material-ui/Chip'
-import SvgIcon from 'material-ui/SvgIcon'
 import RaisedButton from 'material-ui/RaisedButton'
-import { update as updateTicket, del as deleteTicket, close as closeTicket, tickets as getTickets, createMessage, messages as getMessages } from 'redux/modules/ticket'
-import { blue300, green500 } from 'material-ui/styles/colors'
+import { update as updateTicket, del as deleteTicket, load as loadTickets, createMessage, messages as getMessages } from 'redux/modules/ticket'
+import { blue300 } from 'material-ui/styles/colors'
 
-@connect(state => ({state: state}), {updateTicket, deleteTicket, closeTicket, getTickets, createMessage, getMessages})
+@connect(state => ({tickets: state.ticket.tickets, messages: state.ticket.messages, message: state.ticket.message, user: state.auth.user}), {updateTicket, deleteTicket, loadTickets, createMessage, getMessages})
 class SearchBar extends Component {
+  static propTypes = {
+    user: PropTypes.object,
+    messages: PropTypes.array,
+    ticket: PropTypes.object,
+    message: PropTypes.string,
+    createMessage: PropTypes.func.isRequired,
+    tickets: PropTypes.array,
+    deleteTicket: PropTypes.func.isRequired,
+    updateTicket: PropTypes.func.isRequired,
+    loadTickets: PropTypes.func.isRequired
+  };
+
   constructor (props) {
     super(props)
     this.state = {
       searchString: '',
       openTicket: false,
-      tickets: this.props.tickets,
       ticket: {
         id: '',
         title: '',
         description: '',
         address: '',
+        message: '',
         creator: {
           email: ''
         }
@@ -78,12 +89,14 @@ class SearchBar extends Component {
   }
 
   handleEdit () {
+    const {updateTicket, loadTickets, user} = this.props
     const newTicket = {
       title: this.state.title,
       description: this.state.description,
       status: this.state.status
     }
-    this.props.updateTicket(this.state.ticket.id, newTicket).then(response => this.props.getTickets().then(response => this.setState({tickets: response, openTicket: false})))
+    console.log(user)
+    updateTicket(this.state.ticket.id, newTicket).then(loadTickets(user.cityId).then(response => this.setState({openTicket: false})))
   }
 
   handleChangeMessage (e) {
@@ -94,7 +107,7 @@ class SearchBar extends Component {
     const newMessage = {
       text: this.state.message
     }
-    this.props.createMessage(this.state.ticket.id, newMessage).then(response => this.props.getMessages(this.state.ticket.id).then(response => this.setState({messages: response, message: ''})))
+    this.props.createMessage(this.state.ticket.id, newMessage).then(response => this.props.getMessages(this.state.ticket.id))
   }
 
   handleStatus (e, index, value) {
@@ -109,10 +122,8 @@ class SearchBar extends Component {
 
   render () {
     const styles = require('./SearchBar.styl')
-
     var searchString = this.state.searchString.trim().toLowerCase()
-    var tickets = this.state.tickets
-    var messages = this.state.messages
+    var {tickets, messages} = this.props
 
     const actions = [
       <FlatButton
@@ -135,11 +146,11 @@ class SearchBar extends Component {
 
     return (
       <div>
-        <TextField className={styles.SearchBar} name='searchString' value={this.state.searchString} onChange={this.handleSearchbar.bind(this)} placeholder='Type here' />
+        <TextField className={styles.SearchBar} name='searchString' value={searchString} onChange={this.handleSearchbar.bind(this)} placeholder='Recherche' />
         <List className={styles.ticketList}>
           {tickets && tickets.map((ticket, i) => {
             return (
-              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              <div key={ticket.id} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <ListItem
                   key={ticket.id}
                   id={ticket.id}
@@ -171,19 +182,19 @@ class SearchBar extends Component {
                 )
             })}
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-              <TextField id='title' name='title' floatingLabelText='Title' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.ticket.title} onChange={this.handleChange.bind(this)} ref='title' />
+              <TextField id='title' name='title' floatingLabelText='Titre' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.ticket.title} onChange={this.handleChange.bind(this)} ref='title' />
               <TextField id='description' name='description' floatingLabelText='Description' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.ticket.description} onChange={this.handleChange.bind(this)} ref='description' />
               <SelectField value={this.state.value} onChange={this.handleStatus.bind(this)}>
-                <MenuItem value={1} primaryText='Open' />
-                <MenuItem value={2} primaryText='Pending' />
-                <MenuItem value={3} primaryText='Closed' />
+                <MenuItem value={1} primaryText='Ouvert' />
+                <MenuItem value={2} primaryText='En cours' />
+                <MenuItem value={3} primaryText='Fermé' />
               </SelectField>
             </div>
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-              <TextField id='address' name='address' floatingLabelText='address' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} disabled defaultValue={this.state.ticket.address} ref='address' />
+              <TextField id='address' name='address' floatingLabelText='Adresse' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} disabled defaultValue={this.state.ticket.address} ref='address' />
             </div>
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-              <TextField id='email' name='email' floatingLabelText='email' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} disabled defaultValue={this.state.ticket.creator.email} ref='email' />
+              <TextField id='email' name='email' floatingLabelText='Email' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} disabled defaultValue={this.state.ticket.creator.email} ref='email' />
             </div>
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
               <TextField id='message' name='message' floatingLabelText='Message' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.message} onChange={this.handleChangeMessage.bind(this)} ref='message' />

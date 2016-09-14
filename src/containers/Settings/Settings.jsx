@@ -39,11 +39,11 @@ class Settings extends Component {
       <Dialog open={settingsOpen} modal={false} actions={actions} onRequestClose={closeSettings} title='Settings' contentStyle={{ padding: '0 24px 24px 24px' }}>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            <TextField id='firstnamesettings' floatingLabelText='First name' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={user.firstname} ref='lastname' />
-            <TextField id='lastnamesettings' floatingLabelText='Last name' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={user.lastname} ref='lastname' />
+            <TextField id='firstnamesettings' floatingLabelText='Prénom' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={user.firstname} ref='firstname' />
+            <TextField id='lastnamesettings' floatingLabelText='Nom' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={user.lastname} ref='lastname' />
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            <TextField id='emailsettings' floatingLabelText='email' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={user.email} ref='lastname' />
+            <TextField id='emailsettings' floatingLabelText='Email' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={user.email} ref='email' />
           </div>
         </div>
       </Dialog>

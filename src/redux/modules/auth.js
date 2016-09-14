@@ -60,7 +60,7 @@ export default function reducer (state = initialState, action = {}) {
         signingIn: false,
         user: null,
         token: null,
-        signinError: action.error
+        error: action.error
       }
     case SIGNUP:
       return {
@@ -80,7 +80,7 @@ export default function reducer (state = initialState, action = {}) {
         signingUp: false,
         user: null,
         token: null,
-        signupError: action.error
+        error: action.error
       }
     case SIGNOUT:
       return {
@@ -104,8 +104,7 @@ export default function reducer (state = initialState, action = {}) {
     case UPDATE_USER:
       return {
         ...state,
-        saveLoading: true,
-        saveLoaded: false
+        saveLoading: true
       }
     case UPDATE_USER_SUCCESS:
       return {
@@ -117,7 +116,7 @@ export default function reducer (state = initialState, action = {}) {
       return {
         ...state,
         saveLoading: false,
-        saveError: action.error
+        error: action.error
       }
     default:
       return state

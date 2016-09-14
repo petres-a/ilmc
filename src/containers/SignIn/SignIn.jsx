@@ -6,6 +6,7 @@ import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import { signin } from 'redux/modules/auth'
 
+@connect(state => ({user: state.user}), {signin})
 class SignIn extends Component {
   static propTypes = {
     signin: PropTypes.func.isRequired
@@ -31,10 +32,10 @@ class SignIn extends Component {
       <div className='centerContainer'>
         <Card>
           <div style={{ display: 'flex', flexDirection: 'column', padding: '32px' }}>
-            <h3 style={{ textAlign: 'center', marginTop: 0 }}>Sign In</h3>
+            <h3 style={{ textAlign: 'center', marginTop: 0 }}>Connexion</h3>
             <TextField id='emailsignin' hintText='Email' autoFocus ref='email' hintStyle={{ textAlign: 'center' }} style={{ textAlign: 'center' }} />
-            <TextField id='passwordsignin' hintText='Password' type='password' ref='password' onKeyDown={this.handleKeyDown} />
-            <RaisedButton style={{ marginTop: '8px' }} label='Sign In' secondary onTouchTap={this.signin} />
+            <TextField id='passwordsignin' hintText='Mot de passe' type='password' ref='password' onKeyDown={this.handleKeyDown} />
+            <RaisedButton style={{ marginTop: '8px' }} label='Connexion' secondary onTouchTap={this.signin} />
           </div>
         </Card>
       </div>

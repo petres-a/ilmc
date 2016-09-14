@@ -65,7 +65,7 @@ export default function reducer (state = initialState, action = {}) {
         ...state,
         creating: false,
         created: false,
-        createError: action.error
+        error: action.error
       }
     case UPDATE:
       return {
@@ -82,7 +82,7 @@ export default function reducer (state = initialState, action = {}) {
       return {
         ...state,
         updating: false,
-        updateError: action.error
+        error: action.error
       }
     case DELETE:
       return {
@@ -99,7 +99,7 @@ export default function reducer (state = initialState, action = {}) {
       return {
         ...state,
         deleting: false,
-        deleteError: action.error
+        error: action.error
       }
     case TICKETS:
       return {
@@ -118,7 +118,26 @@ export default function reducer (state = initialState, action = {}) {
         ...state,
         ticketsLoading: false,
         ticketsLoaded: false,
-        ticketsError: action.error
+        error: action.error
+      }
+    case CLOSE:
+      return {
+        ...state,
+        closing: true
+      }
+    case CLOSE_SUCCESS:
+      return {
+        ...state,
+        closing: false,
+        closed: true,
+        ticket: action.result
+      }
+    case CLOSE_FAIL:
+      return {
+        ...state,
+        closing: false,
+        closed: false,
+        error: action.error
       }
     case MESSAGES:
       return {
@@ -137,7 +156,7 @@ export default function reducer (state = initialState, action = {}) {
         ...state,
         messagesLoading: false,
         messagesLoaded: false,
-        messages: action.error
+        error: action.error
       }
     case CREATE_MESSAGE:
       return {
@@ -156,7 +175,7 @@ export default function reducer (state = initialState, action = {}) {
         ...state,
         messageCreating: false,
         messageCreated: false,
-        messageError: action.error
+        error: action.error
       }
     default:
       return state

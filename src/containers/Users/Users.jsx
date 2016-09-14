@@ -6,17 +6,17 @@ import Divider from 'material-ui/Divider'
 import Avatar from 'material-ui/Avatar'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
-import { users as getUsers } from 'redux/modules/users'
+import { citizens as getCitizens } from 'redux/modules/users'
 
-@connect(state => ({users: state.users.users}), {getUsers})
+@connect(state => ({users: state.users.users, me: state.auth.user}), {getCitizens})
 class Users extends Component {
   static propTypes = {
-    users: PropTypes.array
+    users: PropTypes.array,
+    me: PropTypes.object
   };
 
   constructor (props) {
     super(props)
-    this.props.getUsers()
     this.state = {
       searchString: '',
       openUser: false,
@@ -45,6 +45,7 @@ class Users extends Component {
   handleClose () {
     this.setState({openUser: false})
   }
+
   render () {
     const styles = require('./Users.styl')
     var searchString = this.state.searchString.trim().toLowerCase()
@@ -67,7 +68,7 @@ class Users extends Component {
     return (
       <div style={{ display: 'flex', flexDirection: 'row', flexGrow: 1 }}>
         <div style={{ display: 'flex', flexDirection: 'column', flexBasis: '50%' }}>
-          <h3 className={styles.h3users}>Liste des Utilisateurs</h3>
+          <h3 className={styles.h3users}>Liste des Citoyens</h3>
           <TextField className={styles.SearchBar} name='searchString' value={this.state.searchString} onChange={this.handleSearchbar.bind(this)} placeholder='Type here' />
           <List className={styles.usersList}>
             {users && users.map((user) => {
@@ -93,18 +94,18 @@ class Users extends Component {
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <img src={this.state.user.picture} />
               <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                <TextField id='id' name='id' floatingLabelText='User id' disabled style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.user.id} ref='id' />
-                <TextField id='connected' name='connected' floatingLabelText='Connected' disabled style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.user.connected ? 'Online' : 'Offline'} ref='id' />
+                <TextField id='id' name='id' floatingLabelText='Id utilisateur' disabled style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.user.id} ref='id' />
+                <TextField id='connected' name='connected' floatingLabelText='Connecté' disabled style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.user.connected ? 'En ligne' : 'Hors ligne'} ref='id' />
               </div>
               <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                <TextField id='firstname' name='firstname' floatingLabelText='Firstname' disabled style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.user.firstname} ref='firstname' />
-                <TextField id='lastname' name='lastname' floatingLabelText='Lastname' disabled style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.user.lastname} ref='lastname' />
+                <TextField id='firstname' name='firstname' floatingLabelText='Prénom' disabled style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.user.firstname} ref='firstname' />
+                <TextField id='lastname' name='lastname' floatingLabelText='Nom' disabled style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.user.lastname} ref='lastname' />
               </div>
               <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <TextField id='email' name='email' floatingLabelText='Email' disabled style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.user.email} ref='email' />
               </div>
               <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                <TextField id='phone' name='phone' floatingLabelText='Phone' disabled style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.user.phone} ref='phone' />
+                <TextField id='phone' name='phone' floatingLabelText='Téléphone' disabled style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.user.phone} ref='phone' />
               </div>
             </div>
           </Dialog>

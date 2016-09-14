@@ -4,6 +4,9 @@ const LOAD_FAIL = 'users/LOAD_FAIL'
 const USERS = 'users/USERS'
 const USERS_SUCCESS = 'users/USERS_SUCCESS'
 const USERS_FAIL = 'users/USERS_FAIL'
+const CITIZENS = 'user/CITIZENS'
+const CITIZENS_SUCCESS = 'user/CITIZENS_SUCESS'
+const CITIZENS_FAIL = 'user/CITIZENS_FAIL'
 
 const initialState = {
   loaded: false
@@ -21,7 +24,7 @@ export default function reducer (state = initialState, action = {}) {
         ...state,
         loading: false,
         loaded: true,
-        user: action.result
+        users: action.result
       }
     case LOAD_FAIL:
       return {
@@ -49,6 +52,25 @@ export default function reducer (state = initialState, action = {}) {
         usersLoaded: false,
         error: action.error
       }
+    case CITIZENS:
+      return {
+        ...state,
+        loadingCitizens: true
+      }
+    case CITIZENS_SUCCESS:
+      return {
+        ...state,
+        loadingCitizens: false,
+        loadedCitizens: true,
+        users: action.result
+      }
+    case CITIZENS_FAIL:
+      return {
+        ...state,
+        loadingCitizens: false,
+        loadedCitizens: false,
+        error: action.error
+      }
     default:
       return state
   }
@@ -69,5 +91,12 @@ export function users () {
   return {
     types: [USERS, USERS_SUCCESS, USERS_FAIL],
     promise: (client) => client.get('/api/users')
+  }
+}
+
+export function citizens (cityId) {
+  return {
+    types: [CITIZENS, CITIZENS_SUCCESS, CITIZENS_FAIL],
+    promise: (client) => client.get('/api/cities/' + cityId + '/citizens')
   }
 }
