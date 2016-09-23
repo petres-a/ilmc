@@ -36,6 +36,7 @@ class SignIn extends Component {
             <TextField id='emailsignin' hintText='Email' autoFocus ref='email' hintStyle={{ textAlign: 'center' }} style={{ textAlign: 'center' }} />
             <TextField id='passwordsignin' hintText='Mot de passe' type='password' ref='password' onKeyDown={this.handleKeyDown} />
             <RaisedButton style={{ marginTop: '8px' }} label='Connexion' secondary onTouchTap={this.signin} />
+            <a style={{ textAlign: 'center', marginTop: 15 }} href='signup'>Pas encore inscrit ?</a>
           </div>
         </Card>
       </div>

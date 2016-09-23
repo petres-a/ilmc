@@ -186,10 +186,10 @@ export function isLoaded (globalState) {
   return globalState.ticket && globalState.ticket.loaded
 }
 
-export function load (cityId) {
+export function load (cityId, order = 'createdAt', limit = '10', skip = '0') {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get('/api/cities/' + cityId + '/tickets')
+    promise: (client) => client.get('/api/cities/' + cityId + '/tickets?order=' + order + '&limit=' + limit + '&skip=' + skip)
   }
 }
 

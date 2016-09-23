@@ -38,6 +38,7 @@ class SignUp extends Component {
             <TextField id='emailsignup' hintText='Email' ref='email' />
             <TextField id='passwordsignup' hintText='Mot de passe' type='password' ref='password' onKeyDown={this.handleKeyDown} />
             <RaisedButton style={{ marginTop: '8px' }} label='Inscription' secondary onTouchTap={this.signup} />
+            <a style={{ textAlign: 'center', marginTop: 15 }} href='signin'>Déjà inscrit ?</a>
           </div>
         </Card>
       </div>

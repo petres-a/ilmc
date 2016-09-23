@@ -9,7 +9,9 @@ import FlatButton from 'material-ui/FlatButton'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import Chip from 'material-ui/Chip'
+import {GridList, GridTile} from 'material-ui/GridList'
 import RaisedButton from 'material-ui/RaisedButton'
+import { Filter } from 'containers'
 import { update as updateTicket, del as deleteTicket, load as loadTickets, createMessage, messages as getMessages } from 'redux/modules/ticket'
 import { blue300 } from 'material-ui/styles/colors'
 
@@ -96,7 +98,7 @@ class SearchBar extends Component {
       status: this.state.status
     }
     console.log(user)
-    updateTicket(this.state.ticket.id, newTicket).then(loadTickets(user.cityId).then(response => this.setState({openTicket: false})))
+    updateTicket(this.state.ticket.id, newTicket).then(loadTickets(user.cityId).then(this.setState({openTicket: false})))
   }
 
   handleChangeMessage (e) {
@@ -120,6 +122,11 @@ class SearchBar extends Component {
     }
   }
 
+  /* handleDelete () {
+    const user = this.props.user
+    this.props.deleteTicket(this.state.ticket.id).then(loadTickets(user.cityId).then(this.setState({openTicket: false})))
+  } */
+
   render () {
     const styles = require('./SearchBar.styl')
     var searchString = this.state.searchString.trim().toLowerCase()
@@ -136,6 +143,11 @@ class SearchBar extends Component {
         primary
         onTouchTap={this.handleClose.bind(this)}
       />
+      /* <FlatButton
+        label='Supprimer'
+        primary
+        onTouchTap={this.handleDelete.bind(this)}
+      /> */
     ]
 
     if (searchString.length > 0) {
@@ -155,7 +167,7 @@ class SearchBar extends Component {
                   key={ticket.id}
                   id={ticket.id}
                   onTouchTap={() => this.handleOpen(ticket)}
-                  leftAvatar={<Avatar src={ticket.pictures} />}
+                  leftAvatar={<Avatar src={ticket.pictures && ticket.pictures[0] ? ticket.pictures[0] : ''} />}
                   primaryText={ticket.title}
                 />
                 <Chip
@@ -176,11 +188,15 @@ class SearchBar extends Component {
           autoScrollBodyContent
         >
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {this.state.ticket.pictures && this.state.ticket.pictures.map((picture, i) => {
-              return (
-                <img src={picture} />
-                )
-            })}
+            <GridList cellHeight={300} style={styles.gridList}>
+              {this.state.ticket.pictures && this.state.ticket.pictures.map((picture, i) => {
+                return (
+                  <GridTile key={i}>
+                    <img src={picture} />
+                  </GridTile>
+                  )
+              })}
+            </GridList>
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
               <TextField id='title' name='title' floatingLabelText='Titre' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.ticket.title} onChange={this.handleChange.bind(this)} ref='title' />
               <TextField id='description' name='description' floatingLabelText='Description' style={{ flexGrow: 1 }} floatingLabelStyle={{ color: 'black' }} defaultValue={this.state.ticket.description} onChange={this.handleChange.bind(this)} ref='description' />
